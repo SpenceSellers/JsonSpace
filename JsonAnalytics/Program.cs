@@ -8,10 +8,10 @@ namespace JsonAnalytics
     {
         static void Main(string[] args)
         {
-            // var p1 = new ValueParser();
-            // var p2 = p1.Read('[');
-            // var p3 = p2.Read('1');
-            // var p4 = p3.Read(']');
+            var p1 = new ValueParser();
+            var p2 = p1.Read('[');
+            var p3 = p2.Read('1');
+            var p4 = p3.Read(']');
             //
             // var nexts = string.Join("", p4.AcceptableChars());
             // Console.Out.WriteLine(nexts);
@@ -20,7 +20,7 @@ namespace JsonAnalytics
             
             JsonParser parser = new ValueParser();
 
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 100; i++)
             {
                 // var nextChar = RandomElement(parser.AcceptableChars());
                 var nextChars = parser.AcceptableChars().ToList();
@@ -48,14 +48,14 @@ namespace JsonAnalytics
     public abstract class JsonParser
     {
         private readonly Dictionary<char, Func<char, JsonParser>> _parsers = new Dictionary<char, Func<char, JsonParser>>();
-        protected JsonParser _return;
+        protected JsonParser Return;
 
         public IEnumerable<char> AcceptableChars()
         {
             var aa =  _parsers.Keys.ToList();
-            if (CanComplete() && _return != null)
+            if (CanComplete && Return != null)
             {
-                aa.AddRange(_return.AcceptableChars());
+                aa.AddRange(Return.AcceptableChars());
             }
 
             return aa;
@@ -68,19 +68,21 @@ namespace JsonAnalytics
                 return _parsers[c](c);
             }
 
-            if (CanComplete() && _return != null)
+            if (CanComplete && Return != null)
             {
-                return _return.Read(c);
+                return Return.Read(c);
             }
 
             throw new ArgumentException("Cannot read " + c);
         }
 
-        public abstract bool CanComplete();
+        public abstract bool CanComplete { get; }
+
+        public bool CanBeTheEndOfInput => Return == null && CanComplete;
 
         public JsonParser ReturningTo(JsonParser parent)
         {
-            _return = parent;
+            Return = parent;
             return this;
         }
         
@@ -105,10 +107,7 @@ namespace JsonAnalytics
             NextChar("0123456789", _ => new NumberParser());
         }
 
-        public override bool CanComplete()
-        {
-            return true;
-        }
+        public override bool CanComplete => true;
     }
 
     public class ArrayParser : JsonParser
@@ -128,11 +127,11 @@ namespace JsonAnalytics
             switch (state)
             {
                 case ArrayState.ReadyForNext:
-                    NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ArrayParser(ArrayState.JustReadValue).ReturningTo(_return)));
+                    NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return)));
                     break;
                 case ArrayState.JustReadValue:
-                    NextChar(']', _ => new ArrayParser(ArrayState.Completed).ReturningTo(_return));
-                    NextChar(',', _ => new ArrayParser(ArrayState.ReadyForNext).ReturningTo(_return));
+                    NextChar(']', _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
+                    NextChar(',', _ => new ArrayParser(ArrayState.ReadyForNext).ReturningTo(Return));
                     break;
                 case ArrayState.Completed:
                     break;
@@ -141,11 +140,7 @@ namespace JsonAnalytics
             }
         }
 
-        public override bool CanComplete()
-        {
-            // TODO this isn't true
-            return true;
-        }
+        public override bool CanComplete => _state == ArrayState.Completed;
     }
 
     public class ValueParser : JsonParser
@@ -165,10 +160,7 @@ namespace JsonAnalytics
             NextChar('[', _ => new ArrayParser(ArrayParser.ArrayState.ReadyForNext));
         }
 
-        public override bool CanComplete()
-        {
-            return false;
-        }
+        public override bool CanComplete => false;
     }
 
     public class StringParser
