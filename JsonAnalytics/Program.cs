@@ -42,61 +42,24 @@ namespace JsonAnalytics
             var i = new Random().Next(items.Count);
             return items[i];
         }
-        
     }
 
-    public abstract class JsonParser
+    public class JsonHandler
     {
-        private readonly Dictionary<char, Func<char, JsonParser>> _parsers = new Dictionary<char, Func<char, JsonParser>>();
-        protected JsonParser Return;
-
-        public IEnumerable<char> AcceptableChars()
+        public bool IsValidJson(string json)
         {
-            var aa =  _parsers.Keys.ToList();
-            if (CanComplete && Return != null)
+            JsonParser parser = new ValueParser();
+            foreach (var c in json)
             {
-                aa.AddRange(Return.AcceptableChars());
+                if (!parser.AcceptableChars().Contains(c))
+                {
+                    return false;
+                }
+                
+                parser = parser.Read(c);
             }
 
-            return aa;
-        }
-
-        public JsonParser Read(char c)
-        {
-            if (_parsers.ContainsKey(c))
-            {
-                return _parsers[c](c);
-            }
-
-            if (CanComplete && Return != null)
-            {
-                return Return.Read(c);
-            }
-
-            throw new ArgumentException("Cannot read " + c);
-        }
-
-        public abstract bool CanComplete { get; }
-
-        public bool CanBeTheEndOfInput => Return == null && CanComplete;
-
-        public JsonParser ReturningTo(JsonParser parent)
-        {
-            Return = parent;
-            return this;
-        }
-        
-        protected void NextChar(char c, Func<char, JsonParser> parser)
-        {
-            _parsers.Add(c, parser);
-        }
-
-        protected void NextChar(IEnumerable<char> chars, Func<char, JsonParser> parser)
-        {
-            foreach (var c in chars)
-            {
-                NextChar(c, parser);
-            }
+            return parser.CanBeTheEndOfInput;
         }
     }
 
@@ -116,6 +79,7 @@ namespace JsonAnalytics
 
         public enum ArrayState
         {
+            ReadyForFirst,
             ReadyForNext,
             JustReadValue,
             Completed
@@ -126,12 +90,16 @@ namespace JsonAnalytics
             _state = state;
             switch (state)
             {
+                case ArrayState.ReadyForFirst:
+                    NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return)));
+                    NextChar(']', _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
+                    break;
                 case ArrayState.ReadyForNext:
                     NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return)));
                     break;
                 case ArrayState.JustReadValue:
-                    NextChar(']', _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
                     NextChar(',', _ => new ArrayParser(ArrayState.ReadyForNext).ReturningTo(Return));
+                    NextChar(']', _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
                     break;
                 case ArrayState.Completed:
                     break;
@@ -147,7 +115,7 @@ namespace JsonAnalytics
     {
         public static JsonParser ParserForValue(char c)
         {
-            if (c == '[') return new ArrayParser(ArrayParser.ArrayState.ReadyForNext);
+            if (c == '[') return new ArrayParser(ArrayParser.ArrayState.ReadyForFirst);
             if ("0123456789".Contains(c)) return new NumberParser();
             throw new ArgumentOutOfRangeException("Ruh roh");
         }
@@ -157,7 +125,7 @@ namespace JsonAnalytics
         public ValueParser()
         {
             NextChar("0123456789", _ => new NumberParser());
-            NextChar('[', _ => new ArrayParser(ArrayParser.ArrayState.ReadyForNext));
+            NextChar('[', _ => new ArrayParser(ArrayParser.ArrayState.ReadyForFirst));
         }
 
         public override bool CanComplete => false;
