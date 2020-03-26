@@ -22,17 +22,17 @@ namespace JsonAnalytics
                 case ArrayState.ReadyForFirst:
                     // NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return)));
                     NextCanBeValueReturningTo(() => new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return));
-                    NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
-                    NextChar(StructuralChar.ArrayEnd, _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
+                    NextChar(StructuralChar.Whitespace, () => this); // Ignore it
+                    NextChar(StructuralChar.ArrayEnd, () => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
                     break;
                 case ArrayState.ReadyForNext:
                     // NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return)));
                     NextCanBeValueReturningTo(() => new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return));
                     break;
                 case ArrayState.JustReadValue:
-                    NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
-                    NextChar(StructuralChar.Comma, _ => new ArrayParser(ArrayState.ReadyForNext).ReturningTo(Return));
-                    NextChar(StructuralChar.ArrayEnd, _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
+                    NextChar(StructuralChar.Whitespace, () => this); // Ignore it
+                    NextChar(StructuralChar.Comma, () => new ArrayParser(ArrayState.ReadyForNext).ReturningTo(Return));
+                    NextChar(StructuralChar.ArrayEnd, () => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
                     break;
                 case ArrayState.Completed:
                     break;

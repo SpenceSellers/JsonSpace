@@ -20,13 +20,13 @@ namespace JsonAnalytics
             switch (state)
             {
                 case NullState.ReadN:
-                    NextChar(StructuralChar.NullTwo, _ => new NullParser(NullState.ReadU));
+                    NextChar(StructuralChar.NullTwo, () => new NullParser(NullState.ReadU));
                     break;
                 case NullState.ReadU:
-                    NextChar(StructuralChar.NullThree, _ => new NullParser(NullState.ReadFirstL));
+                    NextChar(StructuralChar.NullThree, () => new NullParser(NullState.ReadFirstL));
                     break;
                 case NullState.ReadFirstL:
-                    NextChar(StructuralChar.NullFour, _ => new NullParser(NullState.ReadSecondL));
+                    NextChar(StructuralChar.NullFour, () => new NullParser(NullState.ReadSecondL));
                     break;
                 case NullState.ReadSecondL:
                     break;
