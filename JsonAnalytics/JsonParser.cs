@@ -6,21 +6,26 @@ namespace JsonAnalytics
 {
     public abstract class JsonParser
     {
-        private readonly Dictionary<char, Func<JsonParser>> _parsers = new Dictionary<char, Func<JsonParser>>();
+        private readonly Dictionary<StructuralChar, Func<JsonParser>> _parsers = new Dictionary<StructuralChar, Func<JsonParser>>();
         protected JsonParser Return;
 
         public IEnumerable<char> AcceptableChars()
         {
+            return string.Join("", AcceptableStructuralChars().Select(Structure.AllRenderings));
+        }
+        
+        public IEnumerable<StructuralChar> AcceptableStructuralChars()
+        {
             var aa =  _parsers.Keys.ToList();
             if (CanComplete && Return != null)
             {
-                aa.AddRange(Return.AcceptableChars());
+                aa.AddRange(Return.AcceptableStructuralChars());
             }
 
             return aa;
         }
 
-        public JsonParser Read(char c)
+        public JsonParser Read(StructuralChar c)
         {
             if (_parsers.ContainsKey(c))
             {
@@ -34,6 +39,22 @@ namespace JsonAnalytics
                 return Return.Read(c);
             }
 
+            throw new ArgumentException("Cannot read " + c);
+        }
+
+        /// <summary>
+        /// Make a best guess at what structural character a char represents and then read it
+        /// </summary>
+        public JsonParser Read(char c)
+        {
+            foreach (var structuralChar in AcceptableStructuralChars())
+            {
+                if (Structure.AllRenderings(structuralChar).Contains(c))
+                {
+                    return Read(structuralChar);
+                }
+            }
+            
             throw new ArgumentException("Cannot read " + c);
         }
 
@@ -52,23 +73,11 @@ namespace JsonAnalytics
             return this;
         }
 
-        private void NextChar(char c, Func<JsonParser> parser)
-        {
-            _parsers[c] = parser;
-        }
-        
         protected void NextChar(StructuralChar schar, Func<JsonParser> parser)
         {
-            var renderings = Structure.AllRenderings(schar);
-            NextChar(renderings, parser);
-        }
-
-        private void NextChar(IEnumerable<char> chars, Func<JsonParser> parser)
-        {
-            foreach (var c in chars)
-            {
-                NextChar(c, parser);
-            }
+            // var renderings = Structure.AllRenderings(schar);
+            // NextChar(renderings, parser);
+            _parsers[schar] = parser;
         }
 
         protected void NextCanBeValueReturningTo(Func<JsonParser> returnParser)
