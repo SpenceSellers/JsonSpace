@@ -8,14 +8,6 @@ namespace JsonAnalytics
     {
         static void Main(string[] args)
         {
-            var p1 = new ValueParser();
-            var p2 = p1.Read('[');
-            var p3 = p2.Read('1');
-            var p4 = p3.Read(']');
-            //
-            // var nexts = string.Join("", p4.AcceptableChars());
-            // Console.Out.WriteLine(nexts);
-
             // for (var n = 0; n < 20; n++)
             // {
             //     var s = "[";
