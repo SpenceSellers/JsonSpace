@@ -20,7 +20,8 @@ namespace JsonAnalytics
         UnescapedStringBody,
         StringEscapeMarker,
         SingleEscapedChar,
-        UnicodeEscapedChar
+        UnicodeEscapedChar,
+        Zero
     }
     
     public static class Structure
@@ -46,6 +47,7 @@ namespace JsonAnalytics
                 StructuralChar.StringEscapeMarker => "\\",
                 StructuralChar.SingleEscapedChar => "\"\\/bfnrt",
                 StructuralChar.UnicodeEscapedChar => "0123456789abcdef", // TODO uppercase???
+                StructuralChar.Zero => "0",
                 _ => throw new ArgumentException("Unknown structural char")
             };
         }
