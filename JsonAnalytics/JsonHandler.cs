@@ -8,7 +8,7 @@ namespace JsonAnalytics
     {
         public bool IsValidJson(string json)
         {
-            JsonParser parser = new ValueParser();
+            JsonParser parser = new RootParser();
             foreach (var c in json)
             {
                 if (!parser.AcceptableChars().Contains(c))
@@ -47,7 +47,7 @@ namespace JsonAnalytics
 
         public void Bfs()
         {
-            var initialParser = new ValueParser();
+            var initialParser = new RootParser();
             var initialStates = initialParser.AcceptableChars().Select(c => new BfsNode
             {
                 Json = c.ToString(),

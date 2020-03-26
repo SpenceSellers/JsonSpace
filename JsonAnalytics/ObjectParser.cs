@@ -39,7 +39,7 @@ namespace JsonAnalytics
                     NextChar(StructuralChar.KeyValueSeparator, _ => new ObjectParser(ObjectState.ReadyForValue).ReturningTo(Return));
                     break;
                 case ObjectState.ReadyForValue:
-                    NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ObjectParser(ObjectState.ReadyForNext).ReturningTo(Return)));
+                    NextCanBeValueReturningTo(() => new ObjectParser(ObjectState.ReadyForNext).ReturningTo(Return));
                     break;
                 case ObjectState.ReadyForNext:
                     NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
