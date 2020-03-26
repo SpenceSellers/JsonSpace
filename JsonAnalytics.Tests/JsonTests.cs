@@ -14,6 +14,7 @@ namespace JsonAnalytics.Tests
         [TestCase("[11,2]", ExpectedResult = true)]
         [TestCase("[]", ExpectedResult = true)]
         [TestCase("[[1,2,3,4]]", ExpectedResult = true)]
+        [TestCase("[1, [2, 3], 4]", ExpectedResult = true)]
         [TestCase("-150", ExpectedResult = true)]
         [TestCase("0", ExpectedResult = true)]
         [TestCase("1.6e10", ExpectedResult = true)]
