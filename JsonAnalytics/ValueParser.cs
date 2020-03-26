@@ -10,6 +10,7 @@ namespace JsonAnalytics
             if (c == '[') return new ArrayParser(ArrayParser.ArrayState.ReadyForFirst);
             if (c == 'n') return new NullParser(NullParser.NullState.ReadN);
             if (c == '"') return new StringParser(StringParser.StringState.ReadyForChar);
+            if (c == '{') return new ObjectParser();
             if ("-0123456789".Contains(c)) return NumberParser.GetNumberParser(c);
             throw new ArgumentOutOfRangeException("Ruh roh");
         }
@@ -23,6 +24,7 @@ namespace JsonAnalytics
             NextChar('[', _ => new ArrayParser(ArrayParser.ArrayState.ReadyForFirst));
             NextChar('n', _ => new NullParser(NullParser.NullState.ReadN));
             NextChar('"', _ => new StringParser(StringParser.StringState.ReadyForChar));
+            NextChar('{', _ => new ObjectParser());
         }
 
         public override bool CanComplete => false;

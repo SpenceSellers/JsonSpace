@@ -21,6 +21,10 @@ namespace JsonAnalytics
             Completed
         }
 
+        public StringParser() : this(StringState.ReadyForChar)
+        {
+        }
+
         public StringParser(StringState state)
         {
             _state = state;
