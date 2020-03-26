@@ -24,7 +24,9 @@ namespace JsonAnalytics
         {
             if (_parsers.ContainsKey(c))
             {
-                return _parsers[c](c);
+                var parser =  _parsers[c](c);
+                AssignReturn(parser);
+                return parser;
             }
 
             if (CanComplete && Return != null)
@@ -33,6 +35,11 @@ namespace JsonAnalytics
             }
 
             throw new ArgumentException("Cannot read " + c);
+        }
+
+        protected virtual void AssignReturn(JsonParser nextParser)
+        {
+            nextParser.ReturningTo(Return);
         }
 
         public abstract bool CanComplete { get; }
