@@ -54,7 +54,7 @@ namespace JsonAnalytics
         
         protected void NextChar(char c, Func<char, JsonParser> parser)
         {
-            _parsers.Add(c, parser);
+            _parsers[c] = parser;
         }
 
         protected void NextChar(IEnumerable<char> chars, Func<char, JsonParser> parser)

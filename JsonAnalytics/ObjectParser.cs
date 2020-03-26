@@ -42,6 +42,7 @@ namespace JsonAnalytics
                     NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ObjectParser(ObjectState.ReadyForNext).ReturningTo(Return)));
                     break;
                 case ObjectState.ReadyForNext:
+                    NextChar(' ', _ => this); // Ignore it
                     NextChar('}', _ => new ObjectParser(ObjectState.Completed).ReturningTo(Return));
                     NextChar(',', _ => new ObjectParser(ObjectState.ReadyForKey).ReturningTo(Return));
                     break;
