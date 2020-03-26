@@ -51,8 +51,8 @@ namespace JsonAnalytics
             Return = parent;
             return this;
         }
-        
-        protected void NextChar(char c, Func<JsonParser> parser)
+
+        private void NextChar(char c, Func<JsonParser> parser)
         {
             _parsers[c] = parser;
         }
@@ -63,7 +63,7 @@ namespace JsonAnalytics
             NextChar(renderings, parser);
         }
 
-        protected void NextChar(IEnumerable<char> chars, Func<JsonParser> parser)
+        private void NextChar(IEnumerable<char> chars, Func<JsonParser> parser)
         {
             foreach (var c in chars)
             {
