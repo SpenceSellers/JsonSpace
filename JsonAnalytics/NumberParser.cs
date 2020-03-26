@@ -6,26 +6,6 @@ namespace JsonAnalytics
     {
         private readonly NumberState _state;
 
-        public static NumberParser GetNumberParser(char c)
-        {
-            if (c == '0')
-            {
-                return new NumberParser(NumberState.IsZero);
-            }
-            
-            if (c == '-')
-            {
-                return new NumberParser(NumberState.ReadyForFirstDigit);
-            }
-
-            if ("123456789".Contains(c))
-            {
-                return new NumberParser(NumberState.SecondaryDigit);
-            }
-            
-            throw new ArgumentException("Bad Number start: " + c);
-        }
-        
         public enum NumberState
         {
             IsZero,
@@ -36,6 +16,7 @@ namespace JsonAnalytics
             ReadyForExponentStart,
             ReadyToContinueExponent
         }
+        
         public NumberParser(NumberState state)
         {
             _state = state;
