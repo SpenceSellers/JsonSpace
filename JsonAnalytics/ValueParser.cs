@@ -22,11 +22,11 @@ namespace JsonAnalytics
         public ValueParser()
         {
             NextChar(StructuralChar.Whitespace, _ => this);
-            NextChar(StructuralChar.Zero, _ => new NumberParser(NumberParser.NumberState.IsZero));
+            NextChar(StructuralChar.OnlyZero, _ => new NumberParser(NumberParser.NumberState.IsZero));
             NextChar(StructuralChar.LeadingNegative, _ => new NumberParser(NumberParser.NumberState.ReadyForFirstDigit));
             NextChar(StructuralChar.LeadingIntegerDigit, _ => new NumberParser(NumberParser.NumberState.SecondaryDigit));
             NextChar(StructuralChar.ArrayBegin, _ => new ArrayParser(ArrayParser.ArrayState.ReadyForFirst));
-            NextChar('n', _ => new NullParser(NullParser.NullState.ReadN));
+            NextChar(StructuralChar.NullOne, _ => new NullParser(NullParser.NullState.ReadN));
             NextChar(StructuralChar.StringDelimiter, _ => new StringParser(StringParser.StringState.ReadyForChar));
             NextChar(StructuralChar.ObjectBegin, _ => new ObjectParser());
         }
