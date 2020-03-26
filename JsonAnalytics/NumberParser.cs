@@ -44,25 +44,25 @@ namespace JsonAnalytics
                 case NumberState.IsZero:
                     break;
                 case NumberState.ReadyForFirstDigit:
-                    NextChar("123456789", _ => new NumberParser(NumberState.SecondaryDigit));
+                    NextChar(StructuralChar.LeadingIntegerDigit, _ => new NumberParser(NumberState.SecondaryDigit));
                     break;
                 case NumberState.SecondaryDigit:
-                    NextChar("0123456789", _ => new NumberParser(NumberState.SecondaryDigit));
-                    NextChar(".", _ => new NumberParser(NumberState.ReadyForFraction));
-                    NextChar("eE", _ => new NumberParser(NumberState.ReadyForExponentStart));
+                    NextChar(StructuralChar.FollowingIntegerDigit, _ => new NumberParser(NumberState.SecondaryDigit));
+                    NextChar(StructuralChar.DecimalSeparator, _ => new NumberParser(NumberState.ReadyForFraction));
+                    NextChar(StructuralChar.ScientificNotationSeparator, _ => new NumberParser(NumberState.ReadyForExponentStart));
                     break;
                 case NumberState.ReadyForFraction:
-                    NextChar("0123456789", _ => new NumberParser(NumberState.ReadyToContinueFraction));
+                    NextChar(StructuralChar.FollowingIntegerDigit, _ => new NumberParser(NumberState.ReadyToContinueFraction));
                     break;
                 case NumberState.ReadyToContinueFraction:
-                    NextChar("0123456789", _ => new NumberParser(NumberState.ReadyToContinueFraction));
-                    NextChar("eE", _ => new NumberParser(NumberState.ReadyForExponentStart));
+                    NextChar(StructuralChar.FollowingIntegerDigit, _ => new NumberParser(NumberState.ReadyToContinueFraction));
+                    NextChar(StructuralChar.ScientificNotationSeparator, _ => new NumberParser(NumberState.ReadyForExponentStart));
                     break;
                 case NumberState.ReadyForExponentStart:
-                    NextChar("0123456789", _ => new NumberParser(NumberState.ReadyToContinueExponent));
+                    NextChar(StructuralChar.FollowingIntegerDigit, _ => new NumberParser(NumberState.ReadyToContinueExponent));
                     break;
                 case NumberState.ReadyToContinueExponent:
-                    NextChar("0123456789", _ => new NumberParser(NumberState.ReadyToContinueExponent));
+                    NextChar(StructuralChar.FollowingIntegerDigit, _ => new NumberParser(NumberState.ReadyToContinueExponent));
                     break;
                 
                 default:

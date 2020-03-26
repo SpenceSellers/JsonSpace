@@ -21,16 +21,16 @@ namespace JsonAnalytics
             {
                 case ArrayState.ReadyForFirst:
                     NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return)));
-                    NextChar(' ', _ => this); // Ignore it
-                    NextChar(']', _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
+                    NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
+                    NextChar(StructuralChar.ArrayEnd, _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
                     break;
                 case ArrayState.ReadyForNext:
                     NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ArrayParser(ArrayState.JustReadValue).ReturningTo(Return)));
                     break;
                 case ArrayState.JustReadValue:
-                    NextChar(' ', _ => this); // Ignore it
-                    NextChar(',', _ => new ArrayParser(ArrayState.ReadyForNext).ReturningTo(Return));
-                    NextChar(']', _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
+                    NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
+                    NextChar(StructuralChar.Comma, _ => new ArrayParser(ArrayState.ReadyForNext).ReturningTo(Return));
+                    NextChar(StructuralChar.ArrayEnd, _ => new ArrayParser(ArrayState.Completed).ReturningTo(Return));
                     break;
                 case ArrayState.Completed:
                     break;

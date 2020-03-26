@@ -56,6 +56,12 @@ namespace JsonAnalytics
         {
             _parsers[c] = parser;
         }
+        
+        protected void NextChar(StructuralChar schar, Func<char, JsonParser> parser)
+        {
+            var renderings = Structure.AllRenderings(schar);
+            NextChar(renderings, parser);
+        }
 
         protected void NextChar(IEnumerable<char> chars, Func<char, JsonParser> parser)
         {

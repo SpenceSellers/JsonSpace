@@ -26,25 +26,25 @@ namespace JsonAnalytics
             switch (state)
             {
                 case ObjectState.ReadyForFirstKey:
-                    NextChar('"', _ => new StringParser().ReturningTo(new ObjectParser(ObjectState.ReadyForColon).ReturningTo(Return)));
-                    NextChar(' ', _ => this); // Ignore it
-                    NextChar('}', _ => new ObjectParser(ObjectState.Completed).ReturningTo(Return));
+                    NextChar(StructuralChar.StringDelimiter, _ => new StringParser().ReturningTo(new ObjectParser(ObjectState.ReadyForColon).ReturningTo(Return)));
+                    NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
+                    NextChar(StructuralChar.ObjectEnd, _ => new ObjectParser(ObjectState.Completed).ReturningTo(Return));
                     break;
                 case ObjectState.ReadyForKey:
-                    NextChar('"', _ => new StringParser().ReturningTo(new ObjectParser(ObjectState.ReadyForColon).ReturningTo(Return)));
-                    NextChar(' ', _ => this); // Ignore it
+                    NextChar(StructuralChar.StringDelimiter, _ => new StringParser().ReturningTo(new ObjectParser(ObjectState.ReadyForColon).ReturningTo(Return)));
+                    NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
                     break;
                 case ObjectState.ReadyForColon:
-                    NextChar(' ', _ => this); // Ignore it
-                    NextChar(':', _ => new ObjectParser(ObjectState.ReadyForValue).ReturningTo(Return));
+                    NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
+                    NextChar(StructuralChar.KeyValueSeparator, _ => new ObjectParser(ObjectState.ReadyForValue).ReturningTo(Return));
                     break;
                 case ObjectState.ReadyForValue:
                     NextChar(ValueParser.ValueStarts, c => ValueParser.ParserForValue(c).ReturningTo(new ObjectParser(ObjectState.ReadyForNext).ReturningTo(Return)));
                     break;
                 case ObjectState.ReadyForNext:
-                    NextChar(' ', _ => this); // Ignore it
-                    NextChar('}', _ => new ObjectParser(ObjectState.Completed).ReturningTo(Return));
-                    NextChar(',', _ => new ObjectParser(ObjectState.ReadyForKey).ReturningTo(Return));
+                    NextChar(StructuralChar.Whitespace, _ => this); // Ignore it
+                    NextChar(StructuralChar.ObjectEnd, _ => new ObjectParser(ObjectState.Completed).ReturningTo(Return));
+                    NextChar(StructuralChar.Comma, _ => new ObjectParser(ObjectState.ReadyForKey).ReturningTo(Return));
                     break;
                 case ObjectState.Completed:
                     break;

@@ -31,12 +31,12 @@ namespace JsonAnalytics
             switch (state)
             {
                 case StringState.ReadyForChar:
-                    NextChar('\\', _ => new StringParser(StringState.Escaping));
-                    NextChar(UnescapedChars, _ => new StringParser(StringState.ReadyForChar));
-                    NextChar("\"", _ => new StringParser(StringState.Completed));
+                    NextChar(StructuralChar.StringEscapeMarker, _ => new StringParser(StringState.Escaping));
+                    NextChar(StructuralChar.UnescapedStringBody, _ => new StringParser(StringState.ReadyForChar));
+                    NextChar(StructuralChar.StringDelimiter, _ => new StringParser(StringState.Completed));
                     break;
                 case StringState.Escaping:
-                    NextChar(SimpleEscapes, _ => new StringParser(StringState.ReadyForChar));
+                    NextChar(StructuralChar.SingleEscapedChar, _ => new StringParser(StringState.ReadyForChar));
                     break;
                 case StringState.Completed:
                     break;
