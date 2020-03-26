@@ -20,6 +20,8 @@ namespace JsonAnalytics.Tests
         [TestCase("1.6", ExpectedResult = true)]
         [TestCase("5e5", ExpectedResult = true)]
         [TestCase("[1.1,2e2,3.3e3,4e40]", ExpectedResult = true)]
+        [TestCase("[1,2,null,3]", ExpectedResult = true)]
+        [TestCase("null", ExpectedResult = true)]
         
         // Invalid
         [TestCase("[1,2,3,4", ExpectedResult = false)]
@@ -34,6 +36,7 @@ namespace JsonAnalytics.Tests
         [TestCase("1e2.2", ExpectedResult = false)]
         [TestCase("1e", ExpectedResult = false)]
         [TestCase("1.", ExpectedResult = false)]
+        [TestCase("nall", ExpectedResult = false)]
         public bool CanTellIfJsonIsValid(string input)
         {
             return new JsonHandler().IsValidJson(input);

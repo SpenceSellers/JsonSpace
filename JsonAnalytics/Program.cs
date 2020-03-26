@@ -16,25 +16,27 @@ namespace JsonAnalytics
             // var nexts = string.Join("", p4.AcceptableChars());
             // Console.Out.WriteLine(nexts);
 
-            var s = "";
-            
-            JsonParser parser = new ValueParser();
-
-            for (var i = 0; i < 100; i++)
+            for (var n = 0; n < 10; n++)
             {
-                // var nextChar = RandomElement(parser.AcceptableChars());
-                var nextChars = parser.AcceptableChars().ToList();
-                if (!nextChars.Any())
+                var s = "";
+                JsonParser parser = new ValueParser();
+                for (var i = 0; i < 100; i++)
                 {
-                    break;
-                }
+                    // var nextChar = RandomElement(parser.AcceptableChars());
+                    var nextChars = parser.AcceptableChars().ToList();
+                    if (!nextChars.Any())
+                    {
+                        break;
+                    }
 
-                var next = RandomElement(nextChars);
-                s += next;
-                parser = parser.Read(next);
+                    var next = RandomElement(nextChars);
+                    s += next;
+                    parser = parser.Read(next);
+                }
+                
+                Console.Out.WriteLine(s);
             }
-            
-            Console.Out.WriteLine(s);
+
         }
 
         private static T RandomElement<T>(IList<T> items)
