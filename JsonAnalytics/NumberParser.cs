@@ -26,6 +26,7 @@ namespace JsonAnalytics
                     break;
                 case NumberState.ReadyForFirstDigit:
                     NextChar(StructuralChar.LeadingIntegerDigit, () => new NumberParser(NumberState.SecondaryDigit));
+                    NextChar(StructuralChar.OnlyZero, () => new NumberParser(NumberState.IsZero));
                     break;
                 case NumberState.SecondaryDigit:
                     NextChar(StructuralChar.FollowingIntegerDigit, () => new NumberParser(NumberState.SecondaryDigit));
