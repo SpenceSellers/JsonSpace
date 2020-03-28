@@ -50,7 +50,7 @@ namespace JsonAnalytics
                 StructuralChar.ObjectEnd => "}",
                 StructuralChar.KeyValueSeparator => ":",
                 StructuralChar.StringDelimiter => "\"",
-                StructuralChar.UnescapedStringBody => " !#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+                StructuralChar.UnescapedStringBody => " !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~",
                 StructuralChar.StringEscapeMarker => "\\",
                 StructuralChar.SingleEscapedChar => "\"\\/bfnrt",
                 StructuralChar.UnicodeEscapedChar => "0123456789abcdefABCDEF",

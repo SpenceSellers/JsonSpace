@@ -43,6 +43,8 @@ namespace JsonAnalytics.Tests
         [TestCase("1,2,3,4", ExpectedResult = false)]
         [TestCase("]", ExpectedResult = false)]
         [TestCase("[1[2]", ExpectedResult = false)]
+        [TestCase("[1[2]    ", ExpectedResult = false)]
+        [TestCase("    [1[2]", ExpectedResult = false)]
         [TestCase("[[[[[[120]", ExpectedResult = false)]
         [TestCase("01", ExpectedResult = false)]
         [TestCase("1.6e10e2", ExpectedResult = false)]
