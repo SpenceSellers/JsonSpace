@@ -62,21 +62,26 @@ namespace JsonAnalytics
             var queue = new Queue<BfsNode>();
             QueueAll(queue, initialStates);
 
+            var count = 0;
+
             while (queue.Any())
             {
+                count++;
                 var next = queue.Dequeue();
-                if (next.Json.Length == 4 && next.Parser.CanBeTheEndOfInput)
+                if (next.Json.Length == 3 && next.Parser.CanBeTheEndOfInput)
                 {
                     yield return next;
                 }
-                if (next.Json.Length > 4)
+                if (next.Json.Length > 3)
                 {
-                    yield break;
+                    break;
                 }
                 
                 var nextStates = NextStates(next);
                 QueueAll(queue, nextStates); // TODO: Filter nextStates for seen before (via hash?)
             }
+            
+            Console.Out.WriteLine($"Searched states: {count}");
         }
     }
 }
