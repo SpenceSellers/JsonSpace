@@ -1,4 +1,4 @@
-namespace JsonAnalytics
+namespace JsonAnalytics.Parsing
 {
     public class TrailingWhitespaceParser : JsonParser
     {

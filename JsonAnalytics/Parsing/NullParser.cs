@@ -1,6 +1,6 @@
 using System;
 
-namespace JsonAnalytics
+namespace JsonAnalytics.Parsing
 {
     public class NullParser : JsonParser
     {

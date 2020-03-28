@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JsonAnalytics
+namespace JsonAnalytics.Parsing
 {
     public abstract class JsonParser
     {
