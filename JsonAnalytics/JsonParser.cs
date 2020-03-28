@@ -64,8 +64,11 @@ namespace JsonAnalytics
         }
 
         public abstract bool CanComplete { get; }
+        
+        // If true, then it's OK if the input ends before this has been satisfied.
+        protected virtual bool IsNotNeededToComplete => false;
 
-        public bool CanBeTheEndOfInput => Return == null && CanComplete;
+        public bool CanBeTheEndOfInput => (Return == null || Return.IsNotNeededToComplete) && CanComplete;
 
         public JsonParser ReturningTo(JsonParser parent)
         {

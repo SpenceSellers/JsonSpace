@@ -53,7 +53,7 @@ namespace JsonAnalytics
                 StructuralChar.UnescapedStringBody => " !#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~",
                 StructuralChar.StringEscapeMarker => "\\",
                 StructuralChar.SingleEscapedChar => "\"\\/bfnrt",
-                StructuralChar.UnicodeEscapedChar => "0123456789abcdef", // TODO uppercase???
+                StructuralChar.UnicodeEscapedChar => "0123456789abcdefABCDEF",
                 StructuralChar.OnlyZero => "0",
                 StructuralChar.NullOne => "n",
                 StructuralChar.NullTwo => "u",

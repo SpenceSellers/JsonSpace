@@ -4,9 +4,14 @@ namespace JsonAnalytics
     {
         public RootParser()
         {
-            NextCanBeValueReturningTo(() => null);
+            NextCanBeValueReturningTo(() => new TrailingWhitespaceParser());
         }
 
         public override bool CanComplete => false;
+
+        protected override void AssignReturn(JsonParser nextParser)
+        {
+            // We want to go to trailing whitespace
+        }
     }
 }
