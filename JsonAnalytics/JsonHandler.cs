@@ -68,11 +68,11 @@ namespace JsonAnalytics
             {
                 count++;
                 var next = queue.Dequeue();
-                if (next.Json.Length == 2 && next.Parser.CanBeTheEndOfInput)
+                if (next.Json.Length == 3 && next.Parser.CanBeTheEndOfInput)
                 {
                     yield return next;
                 }
-                if (next.Json.Length > 2)
+                if (next.Json.Length > 3)
                 {
                     break;
                 }

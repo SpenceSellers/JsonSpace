@@ -23,6 +23,8 @@ namespace JsonAnalytics
             switch (state)
             {
                 case NumberState.IsZero:
+                    NextChar(StructuralChar.DecimalSeparator, () => new NumberParser(NumberState.ReadyForFraction));
+                    NextChar(StructuralChar.ScientificNotationSeparator, () => new NumberParser(NumberState.ReadyForExponentStart));
                     break;
                 case NumberState.ReadyForFirstDigit:
                     NextChar(StructuralChar.LeadingIntegerDigit, () => new NumberParser(NumberState.SecondaryDigit));
