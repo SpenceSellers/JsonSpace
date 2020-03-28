@@ -43,6 +43,8 @@ namespace JsonAnalytics.Tests
         [TestCase("{\"key\":1, \"key2\": 2}", ExpectedResult = true)]
         [TestCase("{\"key\":1 ,\"key2\":2 }", ExpectedResult = true)]
         [TestCase("[ ]", ExpectedResult = true)]
+        [TestCase("true", ExpectedResult = true)]
+        [TestCase("false", ExpectedResult = true)]
         
         // Invalid
         [TestCase("[1,2,3,4", ExpectedResult = false)]

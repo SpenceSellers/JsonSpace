@@ -70,18 +70,18 @@ namespace JsonAnalytics
                 var next = queue.Dequeue();
                 
                 // Is this one of the winning states we're looking for?
-                if (next.Json.Length == 10 && next.Parser.CanBeTheEndOfInput)
+                if (next.Json.Length == 9 && next.Parser.CanBeTheEndOfInput)
                 {
                     yield return next;
                 }
                 
                 // Don't queue if the current node can never lead to a solution node
-                if (next.Json.Length + 1 > 10)
+                if (next.Json.Length + 1 > 9)
                 {
                     continue;
                 }
                 
-                var nextStates = NextStates(next);
+                var nextStates = NextStates(next).ToList();
                 QueueAll(queue, nextStates);
             }
             

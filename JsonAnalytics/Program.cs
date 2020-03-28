@@ -10,7 +10,6 @@ namespace JsonAnalytics
     {
         static void Main(string[] args)
         {
-
             var watch = new Stopwatch();
             BigInteger combinations = 0;
             var structrualSolutions = 0;
@@ -29,6 +28,5 @@ namespace JsonAnalytics
             var elapsed = watch.ElapsedMilliseconds;
             Console.Out.WriteLine($"Milliseconds: {elapsed}");
         }
-
     }
 }

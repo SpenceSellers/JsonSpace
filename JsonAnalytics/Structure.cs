@@ -29,7 +29,16 @@ namespace JsonAnalytics
         NullOne,
         NullTwo,
         NullThree,
-        NullFour
+        NullFour,
+        TrueOne,
+        TrueTwo,
+        TrueThree,
+        TrueFour,
+        FalseOne,
+        FalseTwo,
+        FalseThree,
+        FalseFour,
+        FalseFive
     }
     
     public static class Structure
@@ -61,7 +70,15 @@ namespace JsonAnalytics
                 StructuralChar.NullTwo => "u",
                 StructuralChar.NullThree => "l",
                 StructuralChar.NullFour => "l",
-                
+                StructuralChar.TrueOne => "t",
+                StructuralChar.TrueTwo => "r",
+                StructuralChar.TrueThree => "u",
+                StructuralChar.TrueFour => "e",
+                StructuralChar.FalseOne => "f",
+                StructuralChar.FalseTwo => "a",
+                StructuralChar.FalseThree => "l",
+                StructuralChar.FalseFour => "s",
+                StructuralChar.FalseFive => "e",
                 _ => throw new ArgumentException("Unknown structural char")
             };
         }
