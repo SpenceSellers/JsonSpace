@@ -68,17 +68,21 @@ namespace JsonAnalytics
             {
                 count++;
                 var next = queue.Dequeue();
+                
+                // Is this one of the winning states we're looking for?
                 if (next.Json.Length == 10 && next.Parser.CanBeTheEndOfInput)
                 {
                     yield return next;
                 }
-                if (next.Json.Length > 10)
+                
+                // Don't queue if the current node can never lead to a solution node
+                if (next.Json.Length + 1 > 10)
                 {
-                    break;
+                    continue;
                 }
                 
                 var nextStates = NextStates(next);
-                QueueAll(queue, nextStates); // TODO: Filter nextStates for seen before (via hash?)
+                QueueAll(queue, nextStates);
             }
             
             Console.Out.WriteLine($"Searched states: {count}");
