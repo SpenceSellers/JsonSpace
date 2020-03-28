@@ -95,6 +95,7 @@ namespace JsonAnalytics
             NextChar(StructuralChar.ArrayBegin, () => new ArrayParser(ArrayParser.ArrayState.ReadyForFirst).ReturningTo(returnParser()));
             NextChar(StructuralChar.NullOne, () => new NullParser(NullParser.NullState.ReadN).ReturningTo(returnParser()));
             NextChar(StructuralChar.TrueOne, () => new TrueParser(TrueParser.TrueState.ReadT).ReturningTo(returnParser()));
+            NextChar(StructuralChar.FalseOne, () => new FalseParser(FalseParser.FalseState.ReadF).ReturningTo(returnParser()));
             NextChar(StructuralChar.StringDelimiter, () => new StringParser(StringParser.StringState.ReadyForChar).ReturningTo(returnParser()));
             NextChar(StructuralChar.ObjectBegin, () => new ObjectParser().ReturningTo(returnParser()));
         }
