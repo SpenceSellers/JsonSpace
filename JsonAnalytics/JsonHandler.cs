@@ -52,7 +52,7 @@ namespace JsonAnalytics
             }
         }
 
-        public IEnumerable<BfsNode> Bfs()
+        public IEnumerable<BfsNode> Bfs(SearchConfig config)
         {
             var initialParser = new RootParser();
             var initialStates = initialParser.AcceptableStructuralChars().Select(c => new BfsNode
@@ -71,19 +71,17 @@ namespace JsonAnalytics
                 var next = queue.Dequeue();
                 
                 // Is this one of the winning states we're looking for?
-                if (next.Json.Length == 10 && next.Parser.CanBeTheEndOfInput)
+                if (config.IsSuccessState(next))
                 {
                     yield return next;
                 }
                 
                 // Don't queue if the current node can never lead to a solution node
-                if (next.Json.Length + 1 > 10)
+                if (config.CanLeadToSuccessState(next))
                 {
-                    continue;
+                    var nextStates = NextStates(next).ToList();
+                    QueueAll(queue, nextStates);
                 }
-                
-                var nextStates = NextStates(next).ToList();
-                QueueAll(queue, nextStates);
             }
             
             Console.Out.WriteLine($"Searched states: {count}");

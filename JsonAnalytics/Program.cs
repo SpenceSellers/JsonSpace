@@ -15,7 +15,13 @@ namespace JsonAnalytics
             var structrualSolutions = 0;
             
             watch.Start();
-            foreach (var solution in new JsonHandler().Bfs())
+
+            var config = new SearchConfig
+            {
+                IsSuccessState = node => node.Json.Length == 10 && node.Parser.CanBeTheEndOfInput,
+                CanLeadToSuccessState = node => node.Json.Length < 10
+            };
+            foreach (var solution in new JsonHandler().Bfs(config))
             {
                 structrualSolutions++;
                 combinations += Structure.Combinations(solution.Json);
