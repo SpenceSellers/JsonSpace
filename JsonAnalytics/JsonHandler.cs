@@ -22,18 +22,24 @@ namespace JsonAnalytics
             return parser.CanBeTheEndOfInput;
         }
 
-        private class BfsNode
+        public class BfsNode
         {
-            public string Json;
+            public StructuralChar[] Json;
             public JsonParser Parser;
         }
 
         private IEnumerable<BfsNode> NextStates(BfsNode node)
         {
-            return node.Parser.AcceptableChars().Select(c => new BfsNode
+            return node.Parser.AcceptableStructuralChars().Select(c =>
             {
-                Json = node.Json + c,
-                Parser = node.Parser.Read(c)
+                var newJson = new StructuralChar[node.Json.Length + 1];
+                node.Json.CopyTo(newJson, 0);
+                newJson[node.Json.Length] = c;
+                return new BfsNode
+                {
+                    Json = newJson,
+                    Parser = node.Parser.Read(c)
+                };
             });
         }
 
@@ -45,12 +51,12 @@ namespace JsonAnalytics
             }
         }
 
-        public void Bfs()
+        public IEnumerable<BfsNode> Bfs()
         {
             var initialParser = new RootParser();
-            var initialStates = initialParser.AcceptableChars().Select(c => new BfsNode
+            var initialStates = initialParser.AcceptableStructuralChars().Select(c => new BfsNode
             {
-                Json = c.ToString(),
+                Json = new[] {c},
                 Parser = initialParser.Read(c)
             });
             var queue = new Queue<BfsNode>();
@@ -59,13 +65,13 @@ namespace JsonAnalytics
             while (queue.Any())
             {
                 var next = queue.Dequeue();
-                if (next.Parser.CanBeTheEndOfInput)
+                if (next.Json.Length == 4 && next.Parser.CanBeTheEndOfInput)
                 {
-                    Console.Out.WriteLine(next.Json);                    
+                    yield return next;
                 }
-                if (next.Json.Length > 40)
+                if (next.Json.Length > 4)
                 {
-                    return;
+                    yield break;
                 }
                 
                 var nextStates = NextStates(next);

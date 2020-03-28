@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace JsonAnalytics
 {
@@ -59,6 +62,21 @@ namespace JsonAnalytics
                 
                 _ => throw new ArgumentException("Unknown structural char")
             };
+        }
+
+        public static BigInteger Combinations(StructuralChar c)
+        {
+            return AllRenderings(c).Length;
+        }
+
+        public static BigInteger Combinations(IEnumerable<StructuralChar> chars)
+        {
+            return chars.Aggregate(BigInteger.One, (combos, c) => BigInteger.Multiply(combos, Combinations(c)));
+        }
+
+        public static string StringRepr(IEnumerable<StructuralChar> chars)
+        {
+            return string.Join(" ", chars.Select(s => s.ToString()));
         }
     }
 }
