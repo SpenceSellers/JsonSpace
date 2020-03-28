@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 
@@ -9,45 +10,25 @@ namespace JsonAnalytics
     {
         static void Main(string[] args)
         {
-            // for (var n = 0; n < 20; n++)
-            // {
-            //     var s = "[";
-            //     JsonParser parser = new RootParser().Read('[');
-            //     for (var i = 0; i < 250; i++)
-            //     {
-            //         // var nextChar = RandomElement(parser.AcceptableChars());
-            //         var nextChars = parser.AcceptableChars().ToList();
-            //         if (!nextChars.Any())
-            //         {
-            //             break;
-            //         }
-            //
-            //         var next = RandomElement(nextChars);
-            //         s += next;
-            //         parser = parser.Read(next);
-            //     }
-            //     
-            //     Console.Out.WriteLine(s);
-            // }
 
+            var watch = new Stopwatch();
             BigInteger combinations = 0;
             var structrualSolutions = 0;
-
+            
+            watch.Start();
             foreach (var solution in new JsonHandler().Bfs())
             {
                 structrualSolutions++;
                 combinations += Structure.Combinations(solution.Json);
-                Console.Out.WriteLine(Structure.StringRepr(solution.Json));
+                // Console.Out.WriteLine(Structure.StringRepr(solution.Json));
             }
+            watch.Stop();
             
             Console.Out.WriteLine($"Combinations: {combinations}");
             Console.Out.WriteLine($"Structural Solutions: {structrualSolutions}");
+            var elapsed = watch.ElapsedMilliseconds;
+            Console.Out.WriteLine($"Milliseconds: {elapsed}");
         }
 
-        private static T RandomElement<T>(IList<T> items)
-        {
-            var i = new Random().Next(items.Count);
-            return items[i];
-        }
     }
 }

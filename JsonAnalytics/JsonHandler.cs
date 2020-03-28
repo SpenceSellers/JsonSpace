@@ -68,11 +68,11 @@ namespace JsonAnalytics
             {
                 count++;
                 var next = queue.Dequeue();
-                if (next.Json.Length == 4 && next.Parser.CanBeTheEndOfInput)
+                if (next.Json.Length == 10 && next.Parser.CanBeTheEndOfInput)
                 {
                     yield return next;
                 }
-                if (next.Json.Length > 4)
+                if (next.Json.Length > 10)
                 {
                     break;
                 }
@@ -82,6 +82,34 @@ namespace JsonAnalytics
             }
             
             Console.Out.WriteLine($"Searched states: {count}");
+        }
+
+        public string RandomWalk()
+        {
+            
+            var s = "[";
+            var parser = new RootParser().Read('[');
+            for (var i = 0; i < 250; i++)
+            {
+                // var nextChar = RandomElement(parser.AcceptableChars());
+                var nextChars = parser.AcceptableChars().ToList();
+                if (!nextChars.Any())
+                {
+                    break;
+                }
+            
+                var next = RandomElement(nextChars);
+                s += next;
+                parser = parser.Read(next);
+            }
+
+            return s;
+        }
+        
+        private static T RandomElement<T>(IList<T> items)
+        {
+            var i = new Random().Next(items.Count);
+            return items[i];
         }
     }
 }
