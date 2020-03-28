@@ -36,6 +36,8 @@ namespace JsonAnalytics.Tests
         [TestCase(@"  ""test""", ExpectedResult = true)]
         [TestCase(@"""test""  ", ExpectedResult = true)]
         [TestCase(@"""t\tst""", ExpectedResult = true)]
+        [TestCase(@"""t\nst""", ExpectedResult = true)]
+        [TestCase(@"""t\u29c8continue""", ExpectedResult = true)]
         [TestCase(@"[""test""]", ExpectedResult = true)]
         [TestCase("{\"key\": \"value\"}", ExpectedResult = true)]
         [TestCase("{\"key\":1, \"key2\": 2}", ExpectedResult = true)]
@@ -60,6 +62,8 @@ namespace JsonAnalytics.Tests
         [TestCase("1.", ExpectedResult = false)]
         [TestCase("nall", ExpectedResult = false)]
         [TestCase(@"""Test", ExpectedResult = false)]
+        [TestCase(@"""t\qst""", ExpectedResult = false)]
+        [TestCase(@"""t\u29cshort""", ExpectedResult = false)]
         public bool CanTellIfJsonIsValid(string input)
         {
             return new JsonHandler().IsValidJson(input);

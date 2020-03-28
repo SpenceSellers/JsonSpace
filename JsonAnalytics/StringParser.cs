@@ -10,7 +10,10 @@ namespace JsonAnalytics
         {
             ReadyForChar,
             Escaping,
-            // TODO escaping unicode
+            EscapingUnicodeOne,
+            EscapingUnicodeTwo,
+            EscapingUnicodeThree,
+            EscapingUnicodeFour,
             Completed
         }
 
@@ -30,8 +33,21 @@ namespace JsonAnalytics
                     break;
                 case StringState.Escaping:
                     NextChar(StructuralChar.SingleEscapedChar, () => new StringParser(StringState.ReadyForChar));
+                    NextChar(StructuralChar.UnicodeEscapeMarker, () => new StringParser(StringState.EscapingUnicodeOne));
                     break;
                 case StringState.Completed:
+                    break;
+                case StringState.EscapingUnicodeOne:
+                    NextChar(StructuralChar.UnicodeEscapedChar, () => new StringParser(StringState.EscapingUnicodeTwo));
+                    break;
+                case StringState.EscapingUnicodeTwo:
+                    NextChar(StructuralChar.UnicodeEscapedChar, () => new StringParser(StringState.EscapingUnicodeThree));
+                    break;
+                case StringState.EscapingUnicodeThree:
+                    NextChar(StructuralChar.UnicodeEscapedChar, () => new StringParser(StringState.EscapingUnicodeFour));
+                    break;
+                case StringState.EscapingUnicodeFour:
+                    NextChar(StructuralChar.UnicodeEscapedChar, () => new StringParser(StringState.ReadyForChar));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
