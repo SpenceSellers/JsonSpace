@@ -16,10 +16,11 @@ namespace JsonAnalytics
             
             watch.Start();
 
+            var targetLength = 4;
             var config = new SearchConfig
             {
-                IsSuccessState = node => node.Json.Length == 10 && node.Parser.CanBeTheEndOfInput,
-                CanLeadToSuccessState = node => node.Json.Length < 10
+                IsSuccessState = node => node.Json.Length == targetLength && node.Parser.CanBeTheEndOfInput,
+                CanLeadToSuccessState = node => node.Json.Length < targetLength
             };
             foreach (var solution in new JsonHandler().Bfs(config))
             {

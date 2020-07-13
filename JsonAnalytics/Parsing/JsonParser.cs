@@ -70,7 +70,7 @@ namespace JsonAnalytics.Parsing
 
         public bool CanBeTheEndOfInput => (Return == null || Return.IsNotNeededToComplete) && CanComplete;
 
-        public JsonParser ReturningTo(JsonParser parent)
+        public JsonParser ReturningTo(JsonParser? parent)
         {
             Return = parent;
             return this;
