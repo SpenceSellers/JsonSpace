@@ -1,106 +1,21 @@
 # JsonSpace
 How many valid JSON strings fit in 100 characters? What does a statistically random JSON value look like? This project seeks to find answers to these gripping questions and more.
+
 ## Results: How many valid JSON strings are there of length N?
-Note that to narrow the scope of the question, I'm only considering the 95 characters that can be typed on a standard English keyboard. The JSON strings being counted may certainly contain escaped unicode characters, but they won't contain them in their raw form.
-### Length 0
-Valid JSON strings: 0
+To narrow the scope of the question, I'm only considering the 95 characters that can be typed on a standard English keyboard. The JSON strings being counted may certainly contain escaped unicode characters, but they won't contain them in their raw form.
 
-Size of string space: 1
-
-Milliseconds to compute: 0
-### Length 1
-Valid JSON strings: 10
-
-Size of string space: 95
-
-Percent valid: 11.11111111111111%
-
-Milliseconds to compute: 1
-### Length 2
-Valid JSON strings: 123
-
-Size of string space: 9025
-
-Percent valid: 1.36986301369863%
-
-Milliseconds to compute: 3
-### Length 3
-Valid JSON strings: 1631
-
-Size of string space: 857375
-
-Percent valid: 0.19047619047619047%
-
-Milliseconds to compute: 0
-### Length 4
-Valid JSON strings: 27823
-
-Size of string space: 81450625
-
-Percent valid: 0.0341646737273659%
-
-Milliseconds to compute: 0
-### Length 5
-Valid JSON strings: 1052294
-
-Size of string space: 7737809375
-
-Percent valid: 0.013599891200870393%
-
-Milliseconds to compute: 1
-### Length 6
-Valid JSON strings: 79363901
-
-Size of string space: 735091890625
-
-Percent valid: 0.010796804145972791%
-
-Milliseconds to compute: 6
-### Length 7
-Valid JSON strings: 7167426599
-
-Size of string space: 69833729609375
-
-Percent valid: 0.010263779123473264%
-
-Milliseconds to compute: 25
-### Length 8
-Valid JSON strings: 664619637035
-
-Size of string space: 6634204312890625
-
-Percent valid: 0.010019036168720569%
-
-Milliseconds to compute: 145
-### Length 9
-Valid JSON strings: 61837230111568
-
-Size of string space: 630249409724609375
-
-Percent valid: 0.009811616954474097%
-
-Milliseconds to compute: 607
-### Length 10
-Valid JSON strings: 5755842691968125
-
-Size of string space: 59873693923837890625
-
-Percent valid: 0.009613535858488752%
-
-Milliseconds to compute: 2598
-### Length 11
-Valid JSON strings: 535784439899095505
-
-Size of string space: 5688000922764599609375
-
-Percent valid: 0.009419743782969104%
-
-Milliseconds to compute: 9838
-### Length 12
-Valid JSON strings: 49873974843674606335
-
-Size of string space: 540360087662636962890625
-
-Percent valid: 0.009230201218386561%
-
-Milliseconds to compute: 38655
+| Length | Valid JSON strings | Size of string space | Percent valid | Time to compute |
+| --- | --- | --- | --- | --- |
+| 0 | 0 | 1 | 0% | ~0ms |
+| 1 | 10 | 95 | 11.11111% | 1ms |
+| 2 | 123 | 9,025 | 1.36987% | 3ms |
+| 3 | 1,631 | 857,375 | 0.19048% | ~0ms |
+| 4 | 27,823 | 81,450,625 | 0.0341647% | 1ms |
+| 5 | 1,052,294 | 7,737,809,375 | 0.01359989% | 1ms |
+| 6 | 79,363,901 | 735,091,890,625 | 0.0107968% | 6ms |
+| 7 | 7,167,426,599 | 69,833,729,609,375 | 0.010263779% | 25ms |
+| 8 | 664,619,637,035 | 6,634,204,312,890,625 | 0.010019036% | 145ms |
+| 9 | 61,837,230,111,568 | 630,249,409,724,609,375 | 0.00981161695% | 607ms |
+| 10 | 5,755,842,691,968,125 | 59,873,693,923,837,890,625 | 0.0096135359 | 2598ms |
+| 11 | 535,784,439,899,095,505 | 5,688,000,922,764,599,609,375 | 0.0094197437 | 9838ms |
+| 12 | 49,873,974,843,674,606,335 | 540,360,087,662,636,962,890,625 | 0.009230201218% | 38655ms |
