@@ -7,51 +7,9 @@ namespace JsonAnalytics
 {
     public class JsonHandler
     {
-        public bool IsValidJson(string json)
-        {
-            JsonParser parser = new RootParser();
-            foreach (var c in json)
-            {
-                if (!parser.AcceptableChars().Contains(c))
-                {
-                    return false;
-                }
-
-                parser = parser.Read(c);
-            }
-
-            return parser.CanBeTheEndOfInput;
-        }
-
-        public class BfsNode
-        {
-            public StructuralChar[] Json;
-            public JsonParser Parser;
-        }
-
-        private IEnumerable<BfsNode> NextStates(BfsNode node)
-        {
-            return node.Parser.AcceptableStructuralChars().Select(c =>
-            {
-                var newJson = new StructuralChar[node.Json.Length + 1];
-                node.Json.CopyTo(newJson, 0);
-                newJson[node.Json.Length] = c;
-                return new BfsNode
-                {
-                    Json = newJson,
-                    Parser = node.Parser.Read(c)
-                };
-            });
-        }
-
-        private static void QueueAll<T>(Queue<T> queue, IEnumerable<T> items)
-        {
-            foreach (var item in items)
-            {
-                queue.Enqueue(item);
-            }
-        }
-
+        /// <summary>
+        /// Performs a breadth-first search across the space of all possible JSON strings.
+        /// </summary>
         public IEnumerable<BfsNode> Bfs(SearchConfig config)
         {
             var initialParser = new RootParser();
@@ -87,6 +45,38 @@ namespace JsonAnalytics
             Console.Out.WriteLine($"Searched states: {count}");
         }
 
+        public class BfsNode
+        {
+            public StructuralChar[] Json;
+            public JsonParser Parser;
+        }
+
+        private IEnumerable<BfsNode> NextStates(BfsNode node)
+        {
+            return node.Parser.AcceptableStructuralChars().Select(c =>
+            {
+                var newJson = new StructuralChar[node.Json.Length + 1];
+                node.Json.CopyTo(newJson, 0);
+                newJson[node.Json.Length] = c;
+                return new BfsNode
+                {
+                    Json = newJson,
+                    Parser = node.Parser.Read(c)
+                };
+            });
+        }
+
+        private static void QueueAll<T>(Queue<T> queue, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                queue.Enqueue(item);
+            }
+        }
+
+        /// <summary>
+        /// Generates a random valid JSON string
+        /// </summary>
         public string RandomWalk()
         {
 
@@ -113,6 +103,22 @@ namespace JsonAnalytics
         {
             var i = new Random().Next(items.Count);
             return items[i];
+        }
+
+        public bool IsValidJson(string json)
+        {
+            JsonParser parser = new RootParser();
+            foreach (var c in json)
+            {
+                if (!parser.AcceptableChars().Contains(c))
+                {
+                    return false;
+                }
+
+                parser = parser.Read(c);
+            }
+
+            return parser.CanBeTheEndOfInput;
         }
     }
 }

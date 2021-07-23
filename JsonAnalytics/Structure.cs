@@ -5,44 +5,11 @@ using System.Numerics;
 
 namespace JsonAnalytics
 {
-    public enum StructuralChar
-    {
-        Whitespace,
-        ArrayBegin,
-        ArrayEnd,
-        ObjectBegin,
-        ObjectEnd,
-        KeyValueSeparator,
-        Comma,
-        LeadingNegative,
-        LeadingIntegerDigit,
-        FollowingIntegerDigit,
-        DecimalSeparator,
-        ScientificNotationSeparator,
-        StringDelimiter,
-        UnescapedStringBody,
-        StringEscapeMarker,
-        SingleEscapedChar,
-        UnicodeEscapedChar,
-        UnicodeEscapeMarker,
-        OnlyZero,
-        NullOne,
-        NullTwo,
-        NullThree,
-        NullFour,
-        TrueOne,
-        TrueTwo,
-        TrueThree,
-        TrueFour,
-        FalseOne,
-        FalseTwo,
-        FalseThree,
-        FalseFour,
-        FalseFive
-    }
-
     public static class Structure
     {
+        /// <summary>
+        /// Returns all possible values that a StructuralChar can represent.
+        /// </summary>
         public static string AllRenderings(StructuralChar structuralChar)
         {
             return structuralChar switch
@@ -83,11 +50,17 @@ namespace JsonAnalytics
             };
         }
 
-        public static BigInteger Combinations(StructuralChar c)
+        /// <summary>
+        /// How many strings could this single StructuralChar represent?
+        /// </summary>
+        private static BigInteger Combinations(StructuralChar c)
         {
             return AllRenderings(c).Length;
         }
 
+        /// <summary>
+        /// How many strings could this sequence of StructuralChars represent?
+        /// </summary>
         public static BigInteger Combinations(IEnumerable<StructuralChar> chars)
         {
             return chars.Aggregate(BigInteger.One, (combos, c) => BigInteger.Multiply(combos, Combinations(c)));
