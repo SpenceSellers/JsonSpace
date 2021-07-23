@@ -14,7 +14,7 @@ namespace JsonAnalytics.Parsing
             ReadS,
             ReadE
         }
-        
+
         public FalseParser(FalseState state)
         {
             _state = state;

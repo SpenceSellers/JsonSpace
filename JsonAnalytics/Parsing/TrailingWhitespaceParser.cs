@@ -6,7 +6,7 @@ namespace JsonAnalytics.Parsing
         {
             NextChar(StructuralChar.Whitespace, () => this);
         }
-        
+
         public override bool CanComplete => true;
         protected override bool IsNotNeededToComplete => true;
     }

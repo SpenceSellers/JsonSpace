@@ -16,7 +16,7 @@ namespace JsonAnalytics
                 {
                     return false;
                 }
-                
+
                 parser = parser.Read(c);
             }
 
@@ -69,13 +69,13 @@ namespace JsonAnalytics
             {
                 count++;
                 var next = queue.Dequeue();
-                
+
                 // Is this one of the winning states we're looking for?
                 if (config.IsSuccessState(next))
                 {
                     yield return next;
                 }
-                
+
                 // Don't queue if the current node can never lead to a solution node
                 if (config.CanLeadToSuccessState(next))
                 {
@@ -83,13 +83,13 @@ namespace JsonAnalytics
                     QueueAll(queue, nextStates);
                 }
             }
-            
+
             Console.Out.WriteLine($"Searched states: {count}");
         }
 
         public string RandomWalk()
         {
-            
+
             var s = "[";
             var parser = new RootParser().Read('[');
             for (var i = 0; i < 250; i++)
@@ -100,7 +100,7 @@ namespace JsonAnalytics
                 {
                     break;
                 }
-            
+
                 var next = RandomElement(nextChars);
                 s += next;
                 parser = parser.Read(next);
@@ -108,7 +108,7 @@ namespace JsonAnalytics
 
             return s;
         }
-        
+
         private static T RandomElement<T>(IList<T> items)
         {
             var i = new Random().Next(items.Count);

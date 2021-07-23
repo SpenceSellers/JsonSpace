@@ -40,7 +40,7 @@ namespace JsonAnalytics
         FalseFour,
         FalseFive
     }
-    
+
     public static class Structure
     {
         public static string AllRenderings(StructuralChar structuralChar)

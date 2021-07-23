@@ -7,15 +7,15 @@ using System.Numerics;
 namespace JsonAnalytics
 {
     class Program
-    { 
+    {
         private const int PossibleCharacters = 95;
-        
+
         static void Main(string[] args)
         {
             var watch = new Stopwatch();
             BigInteger combinations = 0;
             var structuralSolutions = 0;
-            
+
             watch.Start();
 
             var targetLength = 5;
@@ -31,7 +31,7 @@ namespace JsonAnalytics
                 // Console.Out.WriteLine(Structure.StringRepr(solution.Json));
             }
             watch.Stop();
-            
+
             Console.Out.WriteLine($"Combinations: {combinations}");
             var outOf = BigInteger.Pow(PossibleCharacters, targetLength);
             Console.Out.WriteLine($"Out of {outOf}");

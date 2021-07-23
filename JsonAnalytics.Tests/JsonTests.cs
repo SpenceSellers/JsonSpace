@@ -45,7 +45,7 @@ namespace JsonAnalytics.Tests
         [TestCase("[ ]", ExpectedResult = true)]
         [TestCase("true", ExpectedResult = true)]
         [TestCase("false", ExpectedResult = true)]
-        
+
         // Invalid
         [TestCase("[1,2,3,4", ExpectedResult = false)]
         [TestCase("[", ExpectedResult = false)]

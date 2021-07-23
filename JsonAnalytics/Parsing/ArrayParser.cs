@@ -13,7 +13,7 @@ namespace JsonAnalytics.Parsing
             JustReadValue,
             Completed
         }
-        
+
         public ArrayParser(ArrayState state)
         {
             _state = state;

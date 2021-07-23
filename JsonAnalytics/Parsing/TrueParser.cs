@@ -4,7 +4,7 @@ namespace JsonAnalytics.Parsing
 {
     public class TrueParser : JsonParser
     {
-        
+
         private readonly TrueState _state;
 
         public enum TrueState
@@ -14,7 +14,7 @@ namespace JsonAnalytics.Parsing
             ReadU,
             ReadE
         }
-        
+
         public TrueParser(TrueState state)
         {
             _state = state;

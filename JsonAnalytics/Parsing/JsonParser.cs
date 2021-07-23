@@ -13,7 +13,7 @@ namespace JsonAnalytics.Parsing
         {
             return string.Join("", AcceptableStructuralChars().Select(Structure.AllRenderings));
         }
-        
+
         public IEnumerable<StructuralChar> AcceptableStructuralChars()
         {
             var aa =  _parsers.Keys.ToList();
@@ -54,7 +54,7 @@ namespace JsonAnalytics.Parsing
                     return Read(structuralChar);
                 }
             }
-            
+
             throw new ArgumentException("Cannot read " + c);
         }
 
@@ -64,7 +64,7 @@ namespace JsonAnalytics.Parsing
         }
 
         public abstract bool CanComplete { get; }
-        
+
         // If true, then it's OK if the input ends before this has been satisfied.
         protected virtual bool IsNotNeededToComplete => false;
 
@@ -87,7 +87,7 @@ namespace JsonAnalytics.Parsing
         {
             // Gross. The returning parser has to be a thunk because the return value will probably be set on the caller AFTER the constructor is run.
             // Definitely need to rethink something here, like use real builders instead of constructors.
-            
+
             NextChar(StructuralChar.Whitespace, () => this);
             NextChar(StructuralChar.OnlyZero, () => new NumberParser(NumberParser.NumberState.IsZero).ReturningTo(returnParser()));
             NextChar(StructuralChar.LeadingNegative, () => new NumberParser(NumberParser.NumberState.ReadyForFirstDigit).ReturningTo(returnParser()));

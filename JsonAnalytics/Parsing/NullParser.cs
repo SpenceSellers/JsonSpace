@@ -13,7 +13,7 @@ namespace JsonAnalytics.Parsing
             ReadFirstL,
             ReadSecondL
         }
-        
+
         public NullParser(NullState state)
         {
             _state = state;

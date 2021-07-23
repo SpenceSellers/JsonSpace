@@ -16,7 +16,7 @@ namespace JsonAnalytics.Parsing
             ReadyForExponentStart,
             ReadyToContinueExponent
         }
-        
+
         public NumberParser(NumberState state)
         {
             _state = state;
@@ -48,7 +48,7 @@ namespace JsonAnalytics.Parsing
                 case NumberState.ReadyToContinueExponent:
                     NextChar(StructuralChar.FollowingIntegerDigit, () => new NumberParser(NumberState.ReadyToContinueExponent));
                     break;
-                
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }

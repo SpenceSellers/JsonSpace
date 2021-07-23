@@ -54,7 +54,7 @@ namespace JsonAnalytics.Parsing
         }
 
         public override bool CanComplete => _state == ObjectState.Completed;
-        
+
         protected override void AssignReturn(JsonParser nextParser)
         {
             // We'll manually handle it
