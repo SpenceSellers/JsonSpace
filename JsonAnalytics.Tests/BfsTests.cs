@@ -18,7 +18,7 @@ namespace JsonAnalytics.Tests
                 IsSuccessState = node => node.Json.Length == length && node.Parser.CanBeTheEndOfInput,
                 CanLeadToSuccessState = node => node.Json.Length < length
             };
-            var results = new JsonHandler().Bfs(config);
+            var results = new BreadthFirstSearch(config).Bfs();
 
             BigInteger combinations = 0;
             foreach (var solution in results)
@@ -38,7 +38,7 @@ namespace JsonAnalytics.Tests
                                          && node.Json.All(sc => sc is StructuralChar.ArrayBegin or StructuralChar.ArrayEnd),
                 CanLeadToSuccessState = node => node.Json.All(sc => sc is StructuralChar.ArrayBegin or StructuralChar.ArrayEnd)
             };
-            var hundredthResult = new JsonHandler().Bfs(config).Skip(99).First();
+            var hundredthResult = new BreadthFirstSearch(config).Bfs().Skip(99).First();
 
             // The 1st shortest JSON string of all array characters is [], length 1
             // 2nd is [[]], length 4
@@ -58,7 +58,7 @@ namespace JsonAnalytics.Tests
                 IsSuccessState = node => node.Parser.CanBeTheEndOfInput
             };
 
-            var shortestResult = new JsonHandler().Bfs(config).First();
+            var shortestResult = new BreadthFirstSearch(config).Bfs().First();
             // The shortest way to complete this is to spam out a single digit and then close the arrays as fast as possible
             shortestResult.Json.Should().Equal(
                 StructuralChar.LeadingIntegerDigit,

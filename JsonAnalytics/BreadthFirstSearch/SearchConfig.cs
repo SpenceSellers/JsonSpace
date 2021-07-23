@@ -10,7 +10,7 @@ namespace JsonAnalytics
     public class SearchConfig
     {
         public List<StructuralChar> InitialState = new();
-        public Func<JsonHandler.BfsNode, bool> IsSuccessState = _ => false;
-        public Func<JsonHandler.BfsNode, bool> CanLeadToSuccessState = _ => true;
+        public Func<BreadthFirstSearch.BfsNode, bool> IsSuccessState = _ => false;
+        public Func<BreadthFirstSearch.BfsNode, bool> CanLeadToSuccessState = _ => true;
     }
 }

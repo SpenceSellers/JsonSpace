@@ -31,7 +31,7 @@ namespace JsonAnalytics
             };
 
             // Do a breadth first search across the space of all possible JSON strings.
-            foreach (var solution in new JsonHandler().Bfs(config))
+            foreach (var solution in new BreadthFirstSearch(config).Bfs())
             {
                 structuralSolutions++;
                 combinations += Structure.Combinations(solution.Json);
