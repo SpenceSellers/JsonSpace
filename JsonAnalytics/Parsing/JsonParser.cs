@@ -9,20 +9,28 @@ namespace JsonAnalytics.Parsing
         private readonly Dictionary<StructuralChar, Func<JsonParser>> _parsers = new Dictionary<StructuralChar, Func<JsonParser>>();
         protected JsonParser Return;
 
+        /// <summary>
+        /// Provides all possible characters that will continue this string without creating an invalid JSON string.
+        /// </summary>
         public IEnumerable<char> AcceptableChars()
         {
             return string.Join("", AcceptableStructuralChars().Select(Structure.AllRenderings));
         }
 
+        /// <summary>
+        /// Provides all possible structural characters that will continue this string without creating an invalid JSON string.
+        /// </summary>
         public IEnumerable<StructuralChar> AcceptableStructuralChars()
         {
-            var aa =  _parsers.Keys.ToList();
+            var structuralChars =  _parsers.Keys.ToList();
             if (CanComplete && Return != null)
             {
-                aa.AddRange(Return.AcceptableStructuralChars());
+                // Since this parser can complete at this very moment, all of the acceptable characters
+                // for the NEXT parser are also valid here.
+                structuralChars.AddRange(Return.AcceptableStructuralChars());
             }
 
-            return aa;
+            return structuralChars;
         }
 
         public JsonParser Read(StructuralChar c)
@@ -43,7 +51,7 @@ namespace JsonAnalytics.Parsing
         }
 
         /// <summary>
-        /// Make a best guess at what structural character a char represents and then read it
+        /// Determine what structural character a char represents and then read it
         /// </summary>
         public JsonParser Read(char c)
         {
@@ -68,18 +76,29 @@ namespace JsonAnalytics.Parsing
         // If true, then it's OK if the input ends before this has been satisfied.
         protected virtual bool IsNotNeededToComplete => false;
 
+        /// <summary>
+        /// If the string we're parsing stopped at this point, would it be a valid JSON string?
+        ///
+        /// Note that just because a string is a valid JSON string, doesn't mean that adding more characters will break
+        /// the string. For example, adding more characters to the end of "[1,2]" will break the string, but adding more
+        /// numbers to the end of "1.348" will continue to produce valid JSON strings forever.
+        /// </summary>
         public bool CanBeTheEndOfInput => (Return == null || Return.IsNotNeededToComplete) && CanComplete;
 
+        /// <summary>
+        /// Defines what parser will take over once this parser is done.
+        /// </summary>
         public JsonParser ReturningTo(JsonParser? parent)
         {
             Return = parent;
             return this;
         }
 
+        /// <summary>
+        /// Defines what parser will take over when we read a StructuralChar
+        /// </summary>
         protected void NextChar(StructuralChar schar, Func<JsonParser> parser)
         {
-            // var renderings = Structure.AllRenderings(schar);
-            // NextChar(renderings, parser);
             _parsers[schar] = parser;
         }
 
