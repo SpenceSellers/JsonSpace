@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JsonAnalytics
 {
@@ -7,6 +9,7 @@ namespace JsonAnalytics
     /// </summary>
     public class SearchConfig
     {
+        public List<StructuralChar> InitialState = new();
         public Func<JsonHandler.BfsNode, bool> IsSuccessState = _ => false;
         public Func<JsonHandler.BfsNode, bool> CanLeadToSuccessState = _ => true;
     }

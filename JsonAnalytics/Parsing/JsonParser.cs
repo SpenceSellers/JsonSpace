@@ -47,7 +47,18 @@ namespace JsonAnalytics.Parsing
                 return Return.Read(c);
             }
 
-            throw new ArgumentException("Cannot read " + c);
+            throw new ArgumentException($"{GetType().Name} Cannot read " + c);
+        }
+
+        public JsonParser ReadAll(IEnumerable<StructuralChar> chars)
+        {
+            var parser = this;
+            foreach (var structuralChar in chars)
+            {
+                parser = parser.Read(structuralChar);
+            }
+
+            return parser;
         }
 
         /// <summary>

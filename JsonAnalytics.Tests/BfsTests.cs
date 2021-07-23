@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using FluentAssertions;
@@ -33,7 +34,8 @@ namespace JsonAnalytics.Tests
         {
             var config = new SearchConfig
             {
-                IsSuccessState = node => node.Parser.CanBeTheEndOfInput && node.Json.All(sc => sc is StructuralChar.ArrayBegin or StructuralChar.ArrayEnd),
+                IsSuccessState = node => node.Parser.CanBeTheEndOfInput
+                                         && node.Json.All(sc => sc is StructuralChar.ArrayBegin or StructuralChar.ArrayEnd),
                 CanLeadToSuccessState = node => node.Json.All(sc => sc is StructuralChar.ArrayBegin or StructuralChar.ArrayEnd)
             };
             var hundredthResult = new JsonHandler().Bfs(config).Skip(99).First();
@@ -44,6 +46,25 @@ namespace JsonAnalytics.Tests
             hundredthResult.Json.Should().HaveCount(200);
             hundredthResult.Json[..100].All(sc => sc == StructuralChar.ArrayBegin).Should().BeTrue();
             hundredthResult.Json[100..].All(sc => sc == StructuralChar.ArrayEnd).Should().BeTrue();
+        }
+
+        [Test]
+        public void ShouldBeAbleToCompleteExistingState()
+        {
+            var config = new SearchConfig
+            {
+                InitialState = new List<StructuralChar>
+                    {StructuralChar.ArrayBegin, StructuralChar.ArrayBegin, StructuralChar.LeadingNegative},
+                IsSuccessState = node => node.Parser.CanBeTheEndOfInput
+            };
+
+            var shortestResult = new JsonHandler().Bfs(config).First();
+            // The shortest way to complete this is to spam out a single digit and then close the arrays as fast as possible
+            shortestResult.Json.Should().Equal(
+                StructuralChar.LeadingIntegerDigit,
+                StructuralChar.ArrayEnd,
+                StructuralChar.ArrayEnd
+            );
         }
     }
 }

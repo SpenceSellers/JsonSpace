@@ -12,8 +12,10 @@ namespace JsonAnalytics
         /// </summary>
         public IEnumerable<BfsNode> Bfs(SearchConfig config)
         {
-            var initialParser = new RootParser();
-            var initialStates = initialParser.AcceptableStructuralChars().Select(c => new BfsNode
+            var initialParser = new RootParser().ReadAll(config.InitialState);
+            var initialStates = initialParser
+                .AcceptableStructuralChars()
+                .Select(c => new BfsNode
             {
                 Json = new[] {c},
                 Parser = initialParser.Read(c)
