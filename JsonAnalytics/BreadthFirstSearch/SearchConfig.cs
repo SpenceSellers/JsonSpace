@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace JsonAnalytics
+namespace JsonAnalytics.BreadthFirstSearch
 {
     /// <summary>
     /// Defines a Breadth First Search across the space of all JSON possible strings.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using JsonAnalytics.BreadthFirstSearch;
 
 namespace JsonAnalytics
 {
@@ -31,7 +32,7 @@ namespace JsonAnalytics
             };
 
             // Do a breadth first search across the space of all possible JSON strings.
-            foreach (var solution in new BreadthFirstSearch(config).Bfs())
+            foreach (var solution in new BreadthFirstSearch.BreadthFirstSearch(config).Bfs())
             {
                 structuralSolutions++;
                 combinations += Structure.Combinations(solution.Json);

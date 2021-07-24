@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JsonAnalytics.Parsing;
 
-namespace JsonAnalytics
+namespace JsonAnalytics.BreadthFirstSearch
 {
     public class BreadthFirstSearch
     {
